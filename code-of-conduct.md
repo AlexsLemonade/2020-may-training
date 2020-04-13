@@ -20,7 +20,7 @@ As such, we do not tolerate behavior that is disrespectful to our learners or te
 We do not tolerate discrimination or harassment based on characteristics that include, but are not limited to, gender identity and expression, sexual orientation, disability, physical appearance, body size, citizenship, nationality, ethnic or social origin, pregnancy, familial status, veteran status, genetic information, religion or belief (or lack thereof), membership of a national minority, property, age, education, socio-economic status, technical choices, and experience level.
 
 Everyone who participates in CCDL training activities is required to conform to this Code of Conduct.
-It applies to all spaces managed by the CCDL including, but not limited to, training workshops, email lists, and online forums such as GitHub, Slack and Twitter.
+It applies to all spaces managed by the CCDL including, but not limited to, training workshops, videoconferences, email lists, and online forums such as GitHub, Slack and Twitter.
 By participating, participants indicate their acceptance of the procedures by which the CCDL resolves any Code of Conduct incidents, which may include storage and processing of their personal information.
 
 ### Expected behavior
