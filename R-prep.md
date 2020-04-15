@@ -18,7 +18,7 @@ swirl::install_course("Getting and Cleaning Data")
 If you are interested in even more material, the [full list of swirl courses is here](https://swirlstats.com/scn/title.html)
 
 #### *More resources for learning R*
-*No need to complete all of this before the workshop, but if you want more resources.*
+*Here are some more resources for those of you who want to dive deeper. It is NOT mandatory to go through these for the workshop*
 + [R for Data Science](https://r4ds.had.co.nz/)  
 + [R Markdown](http://rmarkdown.rstudio.com)  
 + [Tutorial on R, RStudio and R Markdown](https://ismayc.github.io/rbasics-book/)  
