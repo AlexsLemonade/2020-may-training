@@ -1,0 +1,147 @@
+---
+title: "Example of How to Retrieve Metadata from SRAdb "
+author: "Candace Savonen"
+date: "2020"
+output:
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+## Summary:
+
+Sequence Read Archive (SRA) is a public repository of sequencing that has an R package, [SRAdb](https://rdrr.io/bioc/SRAdb/), on Bioconductor that can help you retrieve metadata associated with RNA-seq data. 
+In this example, we will show you how to retrieve metadata from SRAdb for a project id (eg. SRP123456).
+SRAdb has an [sqlite file](https://www.sqlite.org/aff_short.html) with all the information in it which we will download in this notebook. 
+The tidyverse has the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for handling `sqlite` files from R. 
+You will recognize a lot of the functions are similar to what we use with data frames. 
+
+### Set Up
+
+For this example, we will use this SRA project id, [SRP045496](https://www.refine.bio/experiments/SRP045496/the-g-protein-alpha-subunit-gsa-is-a-tumor-suppressor-in-sonic-hedgehog-driven-medulloblastoma-rna-seq), which is for a medulloblastoma mouse
+
+For more on SRA ids and more than you'll need to know about the SRA database, see this [knowledge base](https://www.ncbi.nlm.nih.gov/books/NBK56913/).
+
+```{r}
+# Declare the project id you are interested in.
+study_id <- "SRP045496"
+```
+
+Install `SRAdb` if it is not installed.
+
+```{r}
+if (!("SRAdb" %in% installed.packages())) {
+  BiocManager::install("SRAdb")
+}
+```
+
+```{r}
+# magrittr pipe
+`%>%` <- dplyr::`%>%`
+```
+
+Set up SRA input directory and file path. 
+
+```{r}
+# Declare SRA directory 
+sra_db_dir <- file.path("..", "..", "shared", "data", "SRAdb")
+
+# Declare database file path
+sqlite_file <- file.path(sra_db_dir, "SRAmetadb.sqlite")
+
+if (!dir.exists(sra_db_dir)) {
+  dir.create(sra_db_dir, recursive = TRUE)
+}
+```
+
+Set up output directory and file path. 
+
+```{r}
+# Declare output directory 
+output_dir <- file.path("training-modules", "SRA_metadata")
+
+# Declare output file path using the project ID
+output_metadata_file <- file.path(output_dir, paste0(study_id, "_metadata.tsv"))
+
+# Create the directory if it doesn't exist.
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir,  recursive = TRUE)
+}
+```
+
+## Download and connect to SRA metadata sqlite file
+
+Downloading this file will take some time, so we will only download it if it doesn't exist.
+
+```{r}
+# Check if the sqlite file exists here
+if (!file.exists(sqlite_file)) {
+  # Use SRAdb's function to download the file
+  SRAdb::getSRAdbFile(destdir = sra_db_dir)
+}
+```
+
+Connect to the sqlite file. 
+
+```{r}
+# Make connection to sqlite database file
+sra_con <- DBI::dbConnect(RSQLite::SQLite(), sqlite_file)
+```
+
+## Find information on our selected SRA project id 
+
+Use `dbplyr` functions to collect information related to our declared `study_id`.
+
+```{r}
+# Use the sqlite connection to connect to this `sra` table
+sra_df <- dplyr::tbl(sra_con, "sra") %>% 
+  # Filter to the study_id we are looking for
+  dplyr::filter(study_accession == study_id) %>% 
+  # Inner join to the study table that has more specific info about the study
+  dplyr::inner_join(dplyr::tbl(sra_con, "study") , by = "study_accession") %>% 
+  # We need to do this so the dbplyr queries are transformed to a dataset
+  as.data.frame() 
+```
+
+## Retrieve sample-level information
+
+Create a vector of sample ids that are related to our `study_id`.
+
+```{r}
+# Pull out sample accessions for the corresponding study
+sample_accessions <- sra_df %>% 
+  dplyr::pull(sample_accession)
+```
+
+Use `dbplyr` functions to filter to only the samples related to our `study_id`.
+
+```{r}
+# Connect to a different table in the sqlite file
+sample_df <- dplyr::tbl(sra_con, "sample") %>% 
+  # Collect the samples that we identified in the previous set of steps
+  dplyr::filter(sample_accession %in% sample_accessions) %>%
+  # Turn into a data.frame
+  as.data.frame()
+```
+
+## Do some cleaning of the sample_df
+
+Here we'll do some cleaning these cleaning steps will be dependent the metadata itself and on what information you are interested in.
+
+```{r}
+cleaned_sample_df <- sample_df %>% 
+  dplyr::select(-which(apply(is.na(.), 2, all)))
+```
+
+## Write the sample_df to TSV file
+
+```{r}
+cleaned_sample_df %>% 
+  readr::write_tsv(file.path(output_metadata_file))
+```
+
+### Print out session info
+
+```{r}
+sessionInfo()
+```
