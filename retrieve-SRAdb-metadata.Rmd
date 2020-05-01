@@ -43,13 +43,15 @@ if (!("SRAdb" %in% installed.packages())) {
 
 Set up SRA input directory and file path. 
 
+We have already downloaded this file for you to the `shared` data folder, 
 ```{r}
 # Declare SRA directory 
-sra_db_dir <- file.path("SRAdb")
+sra_db_dir <- file.path("~", "shared-data", "SRAdb")
 
 # Declare database file path
 sqlite_file <- file.path(sra_db_dir, "SRAmetadb.sqlite")
 
+# This directory was already created so this won't run
 if (!dir.exists(sra_db_dir)) {
   dir.create(sra_db_dir, recursive = TRUE)
 }
@@ -72,14 +74,17 @@ if (!dir.exists(output_dir)) {
 
 ## Download and connect to SRA metadata sqlite file
 
-Downloading this file will take some time, so we will only download it if it doesn't exist.
+The file you need is already downloaded for you in `shared-data/SRAdb` but we are including it so you know how to obtain this file outside of our RStudio Server. 
 
 ```{r}
-# Check if the sqlite file exists here
-if (!file.exists(sqlite_file)) {
-  # Use SRAdb's function to download the file
-  SRAdb::getSRAdbFile(destdir = sra_db_dir)
-}
+# We don't need to do this next step this time because we'e already downloaded this 
+# file for you in the `shared-data` folder.
+
+# Downloading this file will take some time, so we will only download it if it doesn't exist.
+# if (!file.exists(sqlite_file)) {
+#  # Use SRAdb's function to download the file
+#  SRAdb::getSRAdbFile(destdir = sra_db_dir)
+#}
 ```
 
 Connect to the sqlite file. 
