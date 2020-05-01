@@ -10,11 +10,12 @@ output:
 
 ## Summary:
 
-Sequence Read Archive (SRA) is a public repository of sequencing that has an R package, [SRAdb](https://rdrr.io/bioc/SRAdb/), on Bioconductor that can help you retrieve metadata associated with RNA-seq data. 
-In this example, we will show you how to retrieve metadata from SRAdb for a project id (eg. SRP123456).
-SRAdb has an [sqlite file](https://www.sqlite.org/aff_short.html) with all the information in it which we will download in this notebook. 
-The tidyverse has the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for handling `sqlite` files from R. 
-You will recognize a lot of the functions are similar to what we use with data frames. 
+Sequence Read Archive (SRA) is a public repository of sequencing data that has an associated R package, [SRAdb](https://rdrr.io/bioc/SRAdb/), on Bioconductor that can help you retrieve metadata. 
+In this example, we will show you how to retrieve metadata from SRAdb for a project id (eg. **SRP**123456).
+SRAdb has an [sqlite file](https://www.sqlite.org/aff_short.html) with all the metadata information which we will download in this example.
+The tidyverse has the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for handling `sqlite` files from R.
+We will use `dbplyr` to extract sample information related to our SRA project ID (`SRP`) id of interest
+You will recognize a lot of the functions from our [intro to the `tidyverse` notebook](https://github.com/AlexsLemonade/training-modules/blob/master/intro-to-R-tidyverse/03-intro_to_tidyverse.Rmd). 
 
 ### Set Up
 
