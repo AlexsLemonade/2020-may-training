@@ -18,7 +18,7 @@ You will recognize a lot of the functions are similar to what we use with data f
 
 ### Set Up
 
-For this example, we will use this SRA project id, [SRP045496](https://www.refine.bio/experiments/SRP045496/the-g-protein-alpha-subunit-gsa-is-a-tumor-suppressor-in-sonic-hedgehog-driven-medulloblastoma-rna-seq), which is for a medulloblastoma mouse
+For this example, we will use this SRA project id, [SRP045496](https://www.refine.bio/experiments/SRP045496/the-g-protein-alpha-subunit-gsa-is-a-tumor-suppressor-in-sonic-hedgehog-driven-medulloblastoma-rna-seq), which is for an RNA-seq medulloblastoma mouse model experiment.
 
 For more on SRA ids and more than you'll need to know about the SRA database, see this [knowledge base](https://www.ncbi.nlm.nih.gov/books/NBK56913/).
 
@@ -91,6 +91,7 @@ sra_con <- DBI::dbConnect(RSQLite::SQLite(), sqlite_file)
 ## Find information on our selected SRA project id 
 
 Use `dbplyr` functions to collect information related to our declared `study_id`.
+In this context, these transformation steps that you'll recognize (`filter`, `inner_join`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a data frame form. 
 
 ```{r}
 # Use the sqlite connection to connect to this `sra` table
