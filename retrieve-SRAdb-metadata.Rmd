@@ -14,7 +14,7 @@ Sequence Read Archive (SRA) is a public repository of sequencing data that has a
 In this example, we will show you how to retrieve metadata from SRAdb for a project id (eg. **SRP**123456).
 SRAdb has an [sqlite file](https://www.sqlite.org/aff_short.html) with all the metadata information which we will download in this example.
 The tidyverse has the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for handling `sqlite` files from R.
-We will use `dbplyr` to extract sample information related to our SRA project ID (`SRP`) id of interest
+We will use `*db*plyr` (an extension of `*d*plyr` functions) to extract sample information related to our SRA project ID (`SRP`) id of interest. 
 You will recognize a lot of the functions from our [intro to the `tidyverse` notebook](https://github.com/AlexsLemonade/training-modules/blob/master/intro-to-R-tidyverse/03-intro_to_tidyverse.Rmd). 
 
 ### Set Up
@@ -45,7 +45,7 @@ Set up SRA input directory and file path.
 
 ```{r}
 # Declare SRA directory 
-sra_db_dir <- file.path("..", "..", "shared", "data", "SRAdb")
+sra_db_dir <- file.path("SRAdb")
 
 # Declare database file path
 sqlite_file <- file.path(sra_db_dir, "SRAmetadb.sqlite")
@@ -59,7 +59,7 @@ Set up output directory and file path.
 
 ```{r}
 # Declare output directory 
-output_dir <- file.path("training-modules", "SRA_metadata")
+output_dir <- file.path("SRA_metadata")
 
 # Declare output file path using the project ID
 output_metadata_file <- file.path(output_dir, paste0(study_id, "_metadata.tsv"))
@@ -91,17 +91,29 @@ sra_con <- DBI::dbConnect(RSQLite::SQLite(), sqlite_file)
 
 ## Find information on our selected SRA project id 
 
-Use `dbplyr` functions to collect information related to our declared `study_id`.
+Extract the `sra` table from the sqlite connection: `sra_con`, to the sqlite file, `sqlite_file`.
+
+```{r}
+sra_table <- dplyr::tbl(sra_con, "sra") 
+```
+
+Extract a different table, the `study` table from the same sqlite connection/file.
+
+```{r}
+study_table <- dplyr::tbl(sra_con, "study")
+```
+
+Use the `d*b*plyr` extension of `dplyr` functions to collect information related to our declared `study_id`.
 In this context, these transformation steps that you'll recognize (`filter`, `inner_join`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a data frame form. 
 
 ```{r}
-# Use the sqlite connection to connect to this `sra` table
-sra_df <- dplyr::tbl(sra_con, "sra") %>% 
+# Use the sqlite connection table to apply functions to it
+sra_df <- sra_table %>% 
   # Filter to the study_id we are looking for
   dplyr::filter(study_accession == study_id) %>% 
   # Inner join to the study table that has more specific info about the study
-  dplyr::inner_join(dplyr::tbl(sra_con, "study") , by = "study_accession") %>% 
-  # We need to do this so the dbplyr queries are transformed to a dataset
+  dplyr::inner_join(study_table, by = "study_accession") %>% 
+  # We need to do this so the dbplyr queries are transformed to a data frame
   as.data.frame() 
 ```
 
@@ -115,11 +127,17 @@ sample_accessions <- sra_df %>%
   dplyr::pull(sample_accession)
 ```
 
-Use `dbplyr` functions to filter to only the samples related to our `study_id`.
+Connect to `sample` table in our sqlite connection, `sra_con`.
 
 ```{r}
-# Connect to a different table in the sqlite file
-sample_df <- dplyr::tbl(sra_con, "sample") %>% 
+sample_table <- dplyr::tbl(sra_con, "sample") 
+```
+
+Use `dbplyr` functions to filter the `sample_table` to only the samples related to our `study_id`.
+
+```{r}
+# Filter the sample_table of the sqlite file
+sample_df <- sample_table %>% 
   # Collect the samples that we identified in the previous set of steps
   dplyr::filter(sample_accession %in% sample_accessions) %>%
   # Turn into a data.frame
@@ -128,10 +146,12 @@ sample_df <- dplyr::tbl(sra_con, "sample") %>%
 
 ## Do some cleaning of the sample_df
 
-Here we'll do some cleaning these cleaning steps will be dependent the metadata itself and on what information you are interested in.
+Here we'll do some cleaning. 
+These cleaning steps will be dependent the metadata itself and on what information you are interested in.
 
 ```{r}
 cleaned_sample_df <- sample_df %>% 
+  # Here we getting rid of any columns that only consist of NAs
   dplyr::select(-which(apply(is.na(.), 2, all)))
 ```
 
@@ -139,7 +159,7 @@ cleaned_sample_df <- sample_df %>%
 
 ```{r}
 cleaned_sample_df %>% 
-  readr::write_tsv(file.path(output_metadata_file))
+  readr::write_tsv(output_metadata_file) 
 ```
 
 ### Print out session info
