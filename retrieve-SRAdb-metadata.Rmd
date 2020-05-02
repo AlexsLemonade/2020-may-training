@@ -10,21 +10,21 @@ output:
 
 ## Summary:
 
-Sequence Read Archive (SRA) is a public repository of sequencing data.  
+Sequence Read Archive (SRA) is a public repository of sequencing data, including many RNA-seq datasets.  
 [SRAdb](https://rdrr.io/bioc/SRAdb/) is an R package on Bioconductor that can help you retrieve metadata associated with samples on SRA, which is what we'll use it for here.
 It also can help you look up URLs for files you might want to retrieve.
 
 In this example, we will show you how to retrieve metadata from SRAdb for a project or study id (eg. **SRP**123456).
-SRAdb has an [sqlite file](https://www.sqlite.org/aff_short.html) with all the metadata information we need.
-The `SRAmetadb.sqlite` file contains the database that we query to get the metadata we need.
+The authors of SRAdb provide an [sqlite file](https://www.sqlite.org/aff_short.html),
+ `SRAmetadb.sqlite`, that contains the database that we will query to get the metadata we need.
 
-The Tidyverse includes the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for working with _databases_ (that's what the db stands for).
+The Tidyverse includes the [`dbplyr` package](https://dbplyr.tidyverse.org/) made for working with _database_ files like `sqlite` using much of the same `dplyr` syntax that we have already been using.
 We will use `*db*plyr` (an extension of `*d*plyr` functions) to extract sample information related to our SRA project ID (`SRP`) id of interest. 
 You will recognize a lot of the functions from our [Intro to the Tidyverse notebook](https://github.com/AlexsLemonade/training-modules/blob/master/intro-to-R-tidyverse/03-intro_to_tidyverse.Rmd). 
 
 ### Obtaining the SRAdb sqlite file
 
-`SRAmetadb.sqlite` is already downloaded for you in `shared-data/SRAdb`.
+`SRAmetadb.sqlite` is already downloaded for you in `~/shared-data/SRAdb`.
 We are including this code for your reference so you know how to obtain this file outside of our RStudio Server. 
 
 Note that this file is very large (24 GB!), so please be sure to avoid downloading another copy to our RStudio Server.
@@ -104,20 +104,23 @@ sra_con <- DBI::dbConnect(RSQLite::SQLite(), sqlite_file)
 
 ## Find information on our selected SRA project id 
 
-Extract the `sra` table from the sqlite connection: `sra_con`, to the sqlite file, `sqlite_file`.
+`sqlite` databases are made up of a set of tables, much like the data frames we have been using. 
+We need to create variables that point to each table that we want to use with `dplyr`.
+
+Create an object that refers to the `sra` table from the sqlite connection: `sra_con`, to the sqlite file, `sqlite_file`.
 
 ```{r}
 sra_table <- dplyr::tbl(sra_con, "sra") 
 ```
 
-Extract a different table, the `study` table from the same sqlite connection/file.
+Create an object that refers to the `study` table from the same sqlite connection/file..
 
 ```{r}
 study_table <- dplyr::tbl(sra_con, "study")
 ```
 
 Use the `d*b*plyr` extension of `dplyr` functions to collect information related to our declared `study_id`.
-In this context, these transformation steps that you'll recognize (`filter`, `inner_join`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a data frame form. 
+In this context, these transformation steps that you'll recognize (`filter`, `inner_join`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a standard data frame. 
 
 ```{r}
 # Use the sqlite connection table to apply functions to it
