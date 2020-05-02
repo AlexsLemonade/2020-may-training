@@ -1,2 +1,6 @@
 
 .DS_Store
+
+# SRA_metadata is created in the SRAdb example - ignore this for development
+# purposes
+SRA_metadata
