@@ -258,7 +258,8 @@ We'll actually use `dplyr::mutate_at()`, which will apply the function *at* each
 
 ```{r}
 cleaned_sample_df <- cleaned_sample_df %>%
-  # We can use the same character vector as before to 
+  # We can use the same character vector as before to specify which columns
+  # we want to apply stringr::str_remove() at
   dplyr::mutate_at(new_columns,
                    # This tells mutate_at to apply stringr::str_remove where
                    # the column is the first argument to stringr::str_remove -
