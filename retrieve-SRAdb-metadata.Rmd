@@ -107,7 +107,7 @@ sra_con <- DBI::dbConnect(RSQLite::SQLite(), sqlite_file)
 `sqlite` databases are made up of a set of tables, much like the data frames we have been using. 
 We need to create variables that point to each table that we want to use with `dplyr`.
 
-Create an object that refers to the `sra` table from the sqlite connection: `sra_con`, to the sqlite file, `sqlite_file`.
+Using `dplyr::tbl()`, create an object that refers to the `sra` table from the sqlite connection: `sra_con`, to the sqlite file, `sqlite_file`.
 
 ```{r}
 sra_table <- dplyr::tbl(sra_con, "sra") 
@@ -120,7 +120,7 @@ study_table <- dplyr::tbl(sra_con, "study")
 ```
 
 Use the `d*b*plyr` extension of `dplyr` functions to collect information related to our declared `study_id`.
-In this context, these transformation steps that you'll recognize (`filter`, `inner_join`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a standard data frame. 
+In this context, these transformation steps that you'll recognize (`filter()`, `inner_join()`) are working on the sqlite database directly (using `dbplyr`), which is why the `as.data.frame()` step is required at the end to bring the data into the R environment as a standard data frame. 
 
 ```{r}
 # Use the sqlite connection table to apply functions to it
@@ -171,7 +171,7 @@ cleaned_sample_df <- sample_df %>%
   dplyr::select(-which(apply(is.na(.), 2, all)))
 ```
 
-We're interested in the sample accession and the sample attributes only, so we will use the `dplyr::select` function to pick the columns we want to retain.
+We're interested in the sample accession and the sample attributes only, so we will use the `dplyr::select()` function to pick the columns we want to retain.
 
 ```{r}
 cleaned_sample_df <- cleaned_sample_df %>%
@@ -191,7 +191,7 @@ cleaned_sample_df$sample_attribute
 Notice how this single column contains 5 columns worth of information: `source_name`, `strain`, `tissue`, `age`, and `genotype`.
 We'd prefer the 5 columns!
 
-Luckily there's another package in the Tidyverse that has functionality for splitting up the column, [`tidyr`](https://tidyr.tidyverse.org/), and the function is called `separate`.
+Luckily there's another package in the Tidyverse that has functionality for splitting up the column, [`tidyr`](https://tidyr.tidyverse.org/), and the function is called `separate()`.
 
 Each column's worth of information is divided up by ` || `, so we can use that to split `sample_attribute` up into individual columns.
 `|` is a special character in regular expressions or regex, which means we need to place `\\` in front of each `|` to escape the character.
@@ -233,9 +233,9 @@ cleaned_sample_df %>%
 
 This is certainly _better_, but it's not quite what we want yet.
 We'll want to remove the words before the `:` in each column.
-We can use `dplyr::mutate` and yet another Tidyverse package, [`stringr`](https://stringr.tidyverse.org/).
+We can use `dplyr::mutate()` and yet another Tidyverse package, [`stringr`](https://stringr.tidyverse.org/).
 
-Let's first look at how we can use `stringr::str_replace` to get only the relevant information we want. 
+Let's first look at how we can use `stringr::str_extract()` to get only the relevant information we want. 
 Here the relevant information is everything after the pattern `: `.
 We'll use `source_name` as an example.
 What `.*` does below is say that the pattern we want to _extract_ from `source_name` is everything before `: `.
@@ -245,7 +245,7 @@ stringr::str_extract(cleaned_sample_df$source_name, ".*: ")
 ```
 
 Using `.*:` returns everything we want to remove from this column.
-We can use this same approach with `stringr::str_remove` to remove everything before and including `: `:
+We can use this same approach with `stringr::str_remove()` to remove everything before and including `: `:
 
 ```{r}
 stringr::str_remove(cleaned_sample_df$source_name, ".*: ")
@@ -253,8 +253,8 @@ stringr::str_remove(cleaned_sample_df$source_name, ".*: ")
 
 This is exactly what we want to keep in the `source_name` column! 
 
-Now we're ready to use `stringr::str_remove` with `dplyr::mutate` to get some cleaned metadata!
-We'll actually use `dplyr::mutate_at`, which will apply the function *at* each column we specify.
+Now we're ready to use `stringr::str_remove()` with `dplyr::mutate()` to get some cleaned metadata!
+We'll actually use `dplyr::mutate_at()`, which will apply the function *at* each column we specify.
 
 ```{r}
 cleaned_sample_df <- cleaned_sample_df %>%
