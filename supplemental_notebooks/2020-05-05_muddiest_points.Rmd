@@ -1,0 +1,136 @@
+---
+title: "Intro to R Muddiest Point Review"
+author: Josh Shapiro for CCDL
+date: 2020-05-05
+output:
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+## Introduction
+
+This notebook is designed to address questions that came up in the Introduction to R and the Tidyverse modules during CCDL training. 
+
+The questions are presented mostly in the order in which they were received, so please take advantage of the table of contents to find and navigate to questions.
+
+## Matrices vs. Data Frames
+
+**What is the difference between a matrix and a data frame?**
+
+### Data frames
+
+We mostly focused on data frames, which I described as being like a spreadsheet, and the RStudio interface allows you to view them in this familiar format (though you can't edit them directly).
+To more precisely describe a data frame, it is a list of vectors that are all the same length, arranged in to columns.
+What this means is that each column of your data frame has a single data type in it, whether it is a `numeric`, `character`, `logical`, `factor` or something we didn't discuss. 
+
+We can illustrate this by showing a way to make a data frame directly, rather than by reading in a data file.
+
+Lets say we have three vectors that describe a set of samples, lets say some plant seedlings:
+
+```{r vectors}
+# id is the sample identifiers, which is a character type
+id <- c("A1", "A2", "B1", "B2")
+# height in cm 
+height <- c(5.2, 8.1, 3.7, 4.2)
+# mass in grams
+mass <- c(2.3, 6.4, 1.1, 1.8)
+```
+
+We can put those together into a data frame with the `data.frame()` function, which takes the vectors we created above as its arguments. 
+I am also adding one special argument, `stringsAsFactors = FALSE`, which prevents R from automatically converting character vectors to factors.
+
+```{r data frame}
+plant_df <- data.frame(id, height, mass, stringsAsFactors = FALSE)
+# print our new data frame out
+plant_df
+```
+
+You can see that `data.frame()` automatically made the names of our vectors into the column names.
+In the notebook output you can also see the different object types for each column under the column names.
+To see this explicitly, we can use `str()` to look at each of the rows:
+
+```{r data frame structure}
+str(plant_df)
+```
+
+### Matrices
+
+A matrix might at first appear similar to a data frame, but it has an additional constraint: rather than each column having a single type, *ALL* data in the matrix has the same type.
+In general, it is a good idea for matrices to also be the same *kind* of data (same units), but that is more for organization than a constraint of the form itself. 
+
+The data frame above is made up of two different types, `character` and `numeric`, so converting it to a matrix would require us to make it all the same type.
+If we try to coerce it into a matrix using `as.matrix()`, R will have to pick a type that it can convert everything to. 
+What does it choose?
+
+```{r dataframe to matrix}
+plant_matrix <- as.matrix(plant_df)
+plant_matrix
+```
+
+While that worked, it is rare that we want numbers converted to text, so we are much more likely to want to first select only the columns with `numeric` values.
+We can do this most easily by removing the first column, as we did in the gene expression table example.
+
+```{r data frame to numeric matrix}
+plant_num_matrix <- as.matrix(plant_df[, -1])
+plant_num_matrix
+```
+
+Now the matrix is all numbers, which is much more useful!
+Now we can do things like calculate the column or row statistics using `apply()`, which would have failed for the data frame due to the mixture of column types.
+
+```{r}
+# column means
+apply(plant_num_matrix, 2, mean)
+```
+```{r column mean failure}
+apply(plant_df, 2, mean)
+```
+
+
+### A note on row names
+
+We can put the character based `id`s back into the matrix by assigning them as the row names, though the syntax here is a bit strange, as we have a function on the right of the assignment operator, which is not something we do very frequently at all.
+
+```{r add row names}
+rownames(plant_num_matrix) <- plant_df$id
+plant_num_matrix
+```
+
+This can be very convenient for keeping matrices organized, but these row names can be lost if you are not careful, especially during input and output, so treat them with care.
+It is also possible to use such row names in data frames, and some packages even require it, but this is even more likely to cause problems, so we avoid it when possible, and favor a separate column with row identifiers of some kind.
+
+## Removing Columns but not Rows
+
+**Why do we need to remove the first column but not the first row (=column titles) in a dataframe when performing data analysis?**
+
+When we were analyzing the data frame of gene expression values, we removed the first column because it contained gene names, not expression values. 
+We didn't need to remove the first row, because, unlike in a spreadsheet, R does not consider the column *names* to be part of the data, so they are not counted in the rows.
+Instead, they are a kind of metadata that is tied to each column, even as we might select only parts of the data within.
+
+In other words, the first row of a data frame is the first row of data, as you can see in the block below with the `plant_df` data frame from above:
+```{r}
+# subset the first row
+plant_df[1,]
+```
+
+
+
+If we choose other subsets from `plant_df`, and you will see that the column names come along no matter what rows or columns we choose
+
+
+```{r}
+# select the second and fourth data rows
+plant_df[c(2,4), ]
+```
+
+
+```{r}
+# select the first three rows, and the first two columns (in reverse order)
+plant_df[1:3, 2:1]
+```
+
+
+
+
+Hopefully those explanations clear some things up for you. Please feel free to ask more questions!
