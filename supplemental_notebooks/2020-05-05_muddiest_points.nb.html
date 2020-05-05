@@ -2915,20 +2915,25 @@ div.tocify {
 <p>Lets say we have three vectors that describe a set of samples, lets say some plant seedlings:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBpZCBpcyB0aGUgc2FtcGxlIGlkZW50aWZpZXJzLCB3aGljaCBpcyBhIGNoYXJhY3RlciB0eXBlXG5pZCA8LSBjKFxcQTFcXCwgXFxBMlxcLCBcXEIxXFwsIFxcQjJcXClcbiMgaGVpZ2h0IGluIGNtIFxuaGVpZ2h0IDwtIGMoNS4yLCA4LjEsIDMuNywgNC4yKVxuIyBtYXNzIGluIGdyYW1zXG5tYXNzIDwtIGMoMi4zLCA2LjQsIDEuMSwgMS44KVxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r # id is the sample identifiers, which is a character type id &lt;- c(1, 2, 1, 2) # height in cm height &lt;- c(5.2, 8.1, 3.7, 4.2) # mass in grams mass &lt;- c(2.3, 6.4, 1.1, 1.8)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBpZCBpcyB0aGUgc2FtcGxlIGlkZW50aWZpZXJzLCB3aGljaCBpcyBhIGNoYXJhY3RlciB0eXBlXG5pZCA8LSBjKFwiQTFcIiwgXCJBMlwiLCBcIkIxXCIsIFwiQjJcIilcbiMgaGVpZ2h0IGluIGNtIFxuaGVpZ2h0IDwtIGMoNS4yLCA4LjEsIDMuNywgNC4yKVxuIyBtYXNzIGluIGdyYW1zXG5tYXNzIDwtIGMoMi4zLCA2LjQsIDEuMSwgMS44KVxuYGBgIn0= -->
+<pre class="r"><code># id is the sample identifiers, which is a character type
+id &lt;- c(&quot;A1&quot;, &quot;A2&quot;, &quot;B1&quot;, &quot;B2&quot;)
+# height in cm 
+height &lt;- c(5.2, 8.1, 3.7, 4.2)
+# mass in grams
+mass &lt;- c(2.3, 6.4, 1.1, 1.8)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We can put those together into a data frame with the <code>data.frame()</code> function, which takes the vectors we created above as its arguments. I am also adding one special argument, <code>stringsAsFactors = FALSE</code>, which prevents R from automatically converting character vectors to factors.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucGxhbnRfZGYgPC0gZGF0YS5mcmFtZShpZCwgaGVpZ2h0LCBtYXNzLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpXG4jIHByaW50IG91ciBuZXcgZGF0YSBmcmFtZSBvdXRcbnBsYW50X2RmXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r plant_df &lt;- data.frame(id, height, mass, stringsAsFactors = FALSE) # print our new data frame out plant_df</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxhbnRfZGYgPC0gZGF0YS5mcmFtZShpZCwgaGVpZ2h0LCBtYXNzLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpXG4jIHByaW50IG91ciBuZXcgZGF0YSBmcmFtZSBvdXRcbnBsYW50X2RmXG5gYGAifQ== -->
+<pre class="r"><code>plant_df &lt;- data.frame(id, height, mass, stringsAsFactors = FALSE)
+# print our new data frame out
+plant_df</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjoiZGF0YS5mcmFtZSIsIm5jb2wiOjMsIm5yb3ciOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFRelVvRE1SQ2U1cWZTd0phQ1hyejFCYnBnZS9GbUxPSURpSVZlWTV1MkM5dWs3QWIwNkd2b00rbkRlSmRxa3Mwc3V2U0QzWHd6ODMwem1UemNMV2RpS1FDQUF1MFRvTnhUNEl2SCs4azFBQ00rNkFHRFFUaGZ2T2c4S2dGRy9tT3BRRzZ2V2paRk5tOXo4Nm4vRDROZVhud0VmTXJ4TEVKbWJ3SHZjdFRrV3gzWlJNakxwbjd6bGM1djFQMjdHRGRxcit0MEtZcGppM1ZpL1owdXRqdVhJclpYZGQxcE1LanNjNDVOc21CK2hRalduYlFxb3p0T3dxUllLNmZ5VGVYOVBqcDJMR2YyNEFwcnZJbUV0K01kYzY4NjFXMk0zVVNzTk1nU1ozODRiYWFSbjlTRjQ4N2FiQXVqOGRxbGV0SmxDb1orMmJocmZxZ0tnODhpZkxiT25YVUtkV0psUzh6RXRlRDRDM3NpUVk4dEFnQUEifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MywibnJvdyI6NH0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVF6VW9ETVJDZTVxZlN3SmFDWHJ6MUJicGdlL0ZtTE9JRGlJVmVZNXUyQzl1azdBYjA2R3ZvTStuRGVKZHFrczBzdXZTRDNYd3o4MzB6bVR6Y0xXZGlLUUNBQXUwVG9OeFQ0SXZIKzhrMUFDTSs2QUdEUVRoZnZPZzhLZ0ZHL21PcFFHNnZXalpGTm05ejg2bi9ENE5lWG53RWZNcnhMRUptYndIdmN0VGtXeDNaUk1qTHBuN3psYzV2MVAyN0dEZHFyK3QwS1lwamkzVmkvWjB1dGp1WElyWlhkZDFwTUtqc2M0NU5zbUIraFFqV25iUXFvenRPd3FSWUs2ZnlUZVg5UGpwMkxHZjI0QXBydkltRXQrTWRjNjg2MVcyTTNVU3NOTWdTWjM4NGJhYVJuOVNGNDg3YWJBdWo4ZHFsZXRKbENvWisyYmhyZnFnS2c4OGlmTGJPblhVS2RXSmxTOHpFdGVENEMzc2lRWTh0QWdBQSJ9 -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"A1","2":"5.2","3":"2.3"},{"1":"A2","2":"8.1","3":"6.4"},{"1":"B1","2":"3.7","3":"1.1"},{"1":"B2","2":"4.2","3":"1.8"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[4]},"pages":{}}}
@@ -2940,13 +2945,12 @@ div.tocify {
 <p>You can see that <code>data.frame()</code> automatically made the names of our vectors into the column names. In the notebook output you can also see the different object types for each column under the column names. To see this explicitly, we can use <code>str()</code> to look at each of the rows:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3RyKHBsYW50X2RmKVxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r str(plant_df)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKHBsYW50X2RmKVxuYGBgIn0= -->
+<pre class="r"><code>str(plant_df)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0NCBvYnMuIG9mICAzIHZhcmlhYmxlczpcbiAkIGlkICAgIDogY2hyICBcXEExXFwgXFxBMlxcIFxcQjFcXCBcXEIyXFxcbiAkIGhlaWdodDogbnVtICA1LjIgOC4xIDMuNyA0LjJcbiAkIG1hc3MgIDogbnVtICAyLjMgNi40IDEuMSAxLjhcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0NCBvYnMuIG9mICAzIHZhcmlhYmxlczpcbiAkIGlkICAgIDogY2hyICBcIkExXCIgXCJBMlwiIFwiQjFcIiBcIkIyXCJcbiAkIGhlaWdodDogbnVtICA1LjIgOC4xIDMuNyA0LjJcbiAkIG1hc3MgIDogbnVtICAyLjMgNi40IDEuMSAxLjhcbiJ9 -->
 <pre><code>'data.frame':   4 obs. of  3 variables:
- $ id    : chr  \A1\ \A2\ \B1\ \B2\
+ $ id    : chr  &quot;A1&quot; &quot;A2&quot; &quot;B1&quot; &quot;B2&quot;
  $ height: num  5.2 8.1 3.7 4.2
  $ mass  : num  2.3 6.4 1.1 1.8</code></pre>
 <!-- rnb-output-end -->
@@ -2959,25 +2963,25 @@ div.tocify {
 <p>The data frame above is made up of two different types, <code>character</code> and <code>numeric</code>, so converting it to a matrix would require us to make it all the same type. If we try to coerce it into a matrix using <code>as.matrix()</code>, R will have to pick a type that it can convert everything to. What does it choose?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucGxhbnRfbWF0cml4IDwtIGFzLm1hdHJpeChwbGFudF9kZilcbnBsYW50X21hdHJpeFxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r plant_matrix &lt;- as.matrix(plant_df) plant_matrix</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxhbnRfbWF0cml4IDwtIGFzLm1hdHJpeChwbGFudF9kZilcbnBsYW50X21hdHJpeFxuYGBgIn0= -->
+<pre class="r"><code>plant_matrix &lt;- as.matrix(plant_df)
+plant_matrix</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICBpZCAgIGhlaWdodCBtYXNzIFxuWzEsXSBcXEExXFwgXFw1LjJcXCAgXFwyLjNcXFxuWzIsXSBcXEEyXFwgXFw4LjFcXCAgXFw2LjRcXFxuWzMsXSBcXEIxXFwgXFwzLjdcXCAgXFwxLjFcXFxuWzQsXSBcXEIyXFwgXFw0LjJcXCAgXFwxLjhcXFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICBpZCAgIGhlaWdodCBtYXNzIFxuWzEsXSBcIkExXCIgXCI1LjJcIiAgXCIyLjNcIlxuWzIsXSBcIkEyXCIgXCI4LjFcIiAgXCI2LjRcIlxuWzMsXSBcIkIxXCIgXCIzLjdcIiAgXCIxLjFcIlxuWzQsXSBcIkIyXCIgXCI0LjJcIiAgXCIxLjhcIlxuIn0= -->
 <pre><code>     id   height mass 
-[1,] \A1\ \5.2\  \2.3\
-[2,] \A2\ \8.1\  \6.4\
-[3,] \B1\ \3.7\  \1.1\
-[4,] \B2\ \4.2\  \1.8\</code></pre>
+[1,] &quot;A1&quot; &quot;5.2&quot;  &quot;2.3&quot;
+[2,] &quot;A2&quot; &quot;8.1&quot;  &quot;6.4&quot;
+[3,] &quot;B1&quot; &quot;3.7&quot;  &quot;1.1&quot;
+[4,] &quot;B2&quot; &quot;4.2&quot;  &quot;1.8&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>While that worked, it is rare that we want numbers converted to text, so we are much more likely to want to first select only the columns with <code>numeric</code> values. We can do this most easily by removing the first column, as we did in the gene expression table example.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucGxhbnRfbnVtX21hdHJpeCA8LSBhcy5tYXRyaXgocGxhbnRfZGZbLCAtMV0pXG5wbGFudF9udW1fbWF0cml4XG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r plant_num_matrix &lt;- as.matrix(plant_df[, -1]) plant_num_matrix</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGxhbnRfbnVtX21hdHJpeCA8LSBhcy5tYXRyaXgocGxhbnRfZGZbLCAtMV0pXG5wbGFudF9udW1fbWF0cml4XG5gYGAifQ== -->
+<pre class="r"><code>plant_num_matrix &lt;- as.matrix(plant_df[, -1])
+plant_num_matrix</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICBoZWlnaHQgbWFzc1xuWzEsXSAgICA1LjIgIDIuM1xuWzIsXSAgICA4LjEgIDYuNFxuWzMsXSAgICAzLjcgIDEuMVxuWzQsXSAgICA0LjIgIDEuOFxuIn0= -->
 <pre><code>     height mass
@@ -2991,9 +2995,9 @@ div.tocify {
 <p>Now the matrix is all numbers, which is much more useful! Now we can do things like calculate the column or row statistics using <code>apply()</code>, which would have failed for the data frame due to the mixture of column types.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBjb2x1bW4gbWVhbnNcbmFwcGx5KHBsYW50X251bV9tYXRyaXgsIDIsIG1lYW4pXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r # column means apply(plant_num_matrix, 2, mean)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjb2x1bW4gbWVhbnNcbmFwcGx5KHBsYW50X251bV9tYXRyaXgsIDIsIG1lYW4pXG5gYGAifQ== -->
+<pre class="r"><code># column means
+apply(plant_num_matrix, 2, mean)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiaGVpZ2h0ICAgbWFzcyBcbiAgIDUuMyAgICAyLjkgXG4ifQ== -->
 <pre><code>height   mass 
@@ -3001,13 +3005,14 @@ div.tocify {
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYXBwbHkocGxhbnRfZGYsIDIsIG1lYW4pXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r apply(plant_df, 2, mean)</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXBwbHkocGxhbnRfZGYsIDIsIG1lYW4pXG5gYGAifQ== -->
+<pre class="r"><code>apply(plant_df, 2, mean)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BXG4gICAgaWQgaGVpZ2h0ICAgbWFzcyBcbiAgICBOQSAgICAgTkEgICAgIE5BIFxuIn0= -->
-<pre><code>argument is not numeric or logical: returning NAargument is not numeric or logical: returning NAargument is not numeric or logical: returning NA
-    id height   mass 
+<!-- rnb-output-begin eyJkYXRhIjoiYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BXG4ifQ== -->
+<pre><code>argument is not numeric or logical: returning NAargument is not numeric or logical: returning NAargument is not numeric or logical: returning NA</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgIGlkIGhlaWdodCAgIG1hc3MgXG4gICAgTkEgICAgIE5BICAgICBOQSBcbiJ9 -->
+<pre><code>    id height   mass 
     NA     NA     NA </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -3018,10 +3023,17 @@ div.tocify {
 <p>We can put the character based <code>id</code>s back into the matrix by assigning them as the row names, though the syntax here is a bit strange, as we have a function on the right of the assignment operator, which is not something we do very frequently at all.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucm93bmFtZXMocGxhbnRfbnVtX21hdHJpeCkgPC0gcGxhbnRfZGYkaWRcbnBsYW50X251bV9tYXRyaXhcbmBgYFxuYGBgIn0= -->
-<p><code>r</code>r rownames(plant_num_matrix) &lt;- plant_df$id plant_num_matrix</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm93bmFtZXMocGxhbnRfbnVtX21hdHJpeCkgPC0gcGxhbnRfZGYkaWRcbnBsYW50X251bV9tYXRyaXhcbmBgYCJ9 -->
+<pre class="r"><code>rownames(plant_num_matrix) &lt;- plant_df$id
+plant_num_matrix</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgaGVpZ2h0IG1hc3NcbkExICAgIDUuMiAgMi4zXG5BMiAgICA4LjEgIDYuNFxuQjEgICAgMy43ICAxLjFcbkIyICAgIDQuMiAgMS44XG4ifQ== -->
+<pre><code>   height mass
+A1    5.2  2.3
+A2    8.1  6.4
+B1    3.7  1.1
+B2    4.2  1.8</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>This can be very convenient for keeping matrices organized, but these row names can be lost if you are not careful, especially during input and output, so treat them with care. It is also possible to use such row names in data frames, and some packages even require it, but this is even more likely to cause problems, so we avoid it when possible, and favor a separate column with row identifiers of some kind.</p>
@@ -3034,11 +3046,11 @@ div.tocify {
 <p>In other words, the first row of a data frame is the first row of data, as you can see in the block below with the <code>plant_df</code> data frame from above:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzdWJzZXQgdGhlIGZpcnN0IHJvd1xucGxhbnRfZGZbMSxdXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r # subset the first row plant_df[1,]</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzdWJzZXQgdGhlIGZpcnN0IHJvd1xucGxhbnRfZGZbMSxdXG5gYGAifQ== -->
+<pre class="r"><code># subset the first row
+plant_df[1,]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjoiZGF0YS5mcmFtZSIsIm5jb2wiOjMsIm5yb3ciOjF9LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRN1c3Q0lCUzlRbkdSWkdxeXZVYWJMUDd4cHlabUQyQTA4UzlyMFpKVk1DMW1QdVI4SmJjTGdoK1F0Tnh6dWVkd0RzdkZac0kzSEFBbzBENEJ5ckFFdGw1OTVsT0FqQ0RvUVFZRHQ1OXc2TTFQQW93ZkRzajhBLzlEMTVtOS83cDF2bUd5OVN1UllscnNaUmRrYUpSUlZhajZ0VlM3MmdhVTdVWFhKUUtEMXZ3VVVlVFZIL2p2K1pheThjd25zN3dTVmhUYkZybUlMZ25seFJ5c01ocEp4Q1ZsQ2JuWEpvM1JVVHNYVlY3V1IvMmR1M2ZnZHplUHptNDF2VjVKL29JVWk2R2wzaWt0by9kR2ZNa21nQ0dtOVdHTFE2dDBmQmVPM2E2d3hvbzR4MHZUeEk3UEJwZC9jMXRQWitBQkFBQT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MywibnJvdyI6MX0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVFRVzdDTUJCYzdKZ0tTOUJLN1RjU3FlMkZJMGdWRDBDdHhOVWtobGdOTmtxTTRKSGxTOUMxYTFOaVMwbDIxanV6TTFsK3JONzVpZ01BQlRva1FCbVd3TDQrRi9rVUlDTUlCcERCeUgxUE9QVHNKd0dlN2k3SS9CWGZFOWVadmZ5NGM3NWhzdkVua1dKYTdHUVhaR2lVVVZXb2hyVlUyOW9HbE8xRTF5VUNvOVljaXlneTloZis2VzhwRzgvc21lV1ZzS0xZdE1oRmRFa29EMlp2bGRGSUlpNHBTOGlETm1rOEhyUnpVZVZsZmREZitadGI4Ty9tM3RtdHBuOHJ5VFZJc1JoYTZxM1NNbnB2eEZvMkFVd3dyUTliN0Z1bDQzL2gyTzBLYTZ5SWM3dzBUZXo0YkhENUJSVTlyY0xnQVFBQSJ9 -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"A1","2":"5.2","3":"2.3","_rn_":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
@@ -3050,11 +3062,11 @@ div.tocify {
 <p>If we choose other subsets from <code>plant_df</code>, and you will see that the column names come along no matter what rows or columns we choose</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzZWxlY3QgdGhlIHNlY29uZCBhbmQgZm91cnRoIGRhdGEgcm93c1xucGxhbnRfZGZbYygyLDQpLCBdXG5gYGBcbmBgYCJ9 -->
-<p><code>r</code>r # select the second and fourth data rows plant_df[c(2,4), ]</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzZWxlY3QgdGhlIHNlY29uZCBhbmQgZm91cnRoIGRhdGEgcm93c1xucGxhbnRfZGZbYygyLDQpLCBdXG5gYGAifQ== -->
+<pre class="r"><code># select the second and fourth data rows
+plant_df[c(2,4), ]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjoiZGF0YS5mcmFtZSIsIm5jb2wiOjMsIm5yb3ciOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRelU3RE1BejJrbVpva1RZbWNkcU5GMmdQMjRVYkF5RWVBSUcwYTJqREd0RWxVOXNKWGdXZUNkNElEWncwUmhCTFR1elBQNS90dTV2TlNtNGtBSERnWXdaY29Bbmk0ZjQydndESUdEb2p5R0RpLzFkTU9ndVpBSE5VRmdQc2Frblc5UkxmbWJmVzU2c2c2L21IbDg5ZmZQSG01ZjN5aS9CL0pNS3FuZTRpQWFlMnBvcld1TlptVy9mUnkzYXE2NUlHazlhOUZOUmtHcVljTkV1WnlpWlVCeVlDWmFWNlZUeTFXSS9lTVNrNWNmdmVPSXRGek45QkpNV2pOZ0ZPRDlaUFV1VmxmYkRQdWIrTkRPRkJwL0ZuZjJ3K1VMTHYyRXJRNHRwdWpkVTBlNk1lZFJPZEdXNGNGaTcycmJGMEc0bG9WL1N1VjVRblM5Y1FFbmFENHc4clBKdzYvZ0VBQUE9PSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MywibnJvdyI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVF3VTdETUF6MWttYlRJbTFNNHJUYmZxQTlyQmR1RElUNEFBVFNycUVOYTBTWFRHMG0rQlg0SnZnak5FalNHRUVzT1hsK3NmM3MzTjFzUzc3bEFFQ0JqZ2xRNWlDd2gvdmIvQUlnSXk0WVFRWlRmNys2cFBPUUNiQndUdUlEdVZvanVsNjdjKzdSWmxVRzJ5dyt2SDMrOHNzM2IrK1hYOGovRTJGYTdHVWZCU2kyVlhWRTQwYXFYV05qbE8xRjN5Y05wcDE1S2JESkxFdzVlSllxVlcyb0RrcEk4bHBZVVR4MXJ0NUZwNlJrWWc1V0dlMktpUDhIbGhTUHVvUTRPMm8vU1oxWHpWRS81NlVYQ00rRHorSk4vbUE2U0pMdjJJcmg0bEx2bEpZNGV5c2VaUnVEdWRzNExGd2NPcVh4Yjdoais4SWFLekNQVjZaRkp1d0dweDhKSHNKWi9nRUFBQT09In0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["id"],"name":[1],"type":["chr"],"align":["left"]},{"label":["height"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mass"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"A2","2":"8.1","3":"6.4","_rn_":"2"},{"1":"B2","2":"4.2","3":"1.8","_rn_":"4"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
@@ -3065,11 +3077,11 @@ div.tocify {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzZWxlY3QgdGhlIGZpcnN0IHRocmVlIHJvd3MsIGFuZCB0aGUgZmlyc3QgdHdvIGNvbHVtbnMgKGluIHJldmVyc2Ugb3JkZXIpXG5wbGFudF9kZlsxOjMsIDI6MV1cbmBgYFxuYGBgIn0= -->
-<p><code>r</code>r # select the first three rows, and the first two columns (in reverse order) plant_df[1:3, 2:1]</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBzZWxlY3QgdGhlIGZpcnN0IHRocmVlIHJvd3MsIGFuZCB0aGUgZmlyc3QgdHdvIGNvbHVtbnMgKGluIHJldmVyc2Ugb3JkZXIpXG5wbGFudF9kZlsxOjMsIDI6MV1cbmBgYCJ9 -->
+<pre class="r"><code># select the first three rows, and the first two columns (in reverse order)
+plant_df[1:3, 2:1]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjoiZGF0YS5mcmFtZSIsIm5jb2wiOjIsIm5yb3ciOjN9LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRUVU3RE1CRGMyblZSTGFVZ3dRUDRRQ0tWY3VBWUVPSUJpRXE5bXNRMEZzR3BFbGR3NUJ2d0p2aFNZZTE0RWZKS2xtZkhPMk9QNzI4M0s3bVJBTUNCenhod2dSREUrdUV1dndLWU1td21NSVc1Mzk5dzZCU0JKeGRlVVo1OStmb3V6MWVoeXV6RDF5ZWVuUVRIVWNpdWwzL29ndEROTXJFWFZyM29JVXBaSkdlTk50dkdrY2pVaVdqZWQ2OEZDVE0vOGc2aGVPcGV0V29nZHlKbHJad3FubnJVWTNkSUpFZmR6cG5Pb29qNTFDSVJUL3FFT041Yi81STZyNXE5ZmM0di9RWGhlRnhaM1BrL3pNWXIyVSswRWhSYjI2MnhtdDdlcWtmZHhtYUJpVVBnWXRjYlN6OGprUjBLMXpsRmM3THFXbUpDTmpqOEFyTzcwQzdzQVFBQSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6M30sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVFRVTdETUJEYzJuVlJMYVVnd1FQNFFDS1ZjdUFZRU9JQmlFcTltc1EwRnNHcEVsZHc1QnZ3SnZoU1llMTRFZkpLbG1mSE8yT1A3MjgzSzdtUkFNQ0J6eGh3Z1JERSt1RXV2d0tZTW13bU1JVzUzOTl3NkJTQkp4ZGVVWjU5K2ZvdXoxZWh5dXpEMXllZW5RVEhVY2l1bDMvb2d0RE5NckVYVnIzb0lVcFpKR2VOTnR2R2tjalVpV2plZDY4RkNUTS84ZzZoZU9wZXRXb2dkeUpsclp3cW5uclVZM2RJSkVmZHpwbk9vb2o1MUNJUlQvcUVPTjViLzVJNnI1cTlmYzR2L1FYaGVGeFozUGsvek1ZcjJVKzBFaFJiMjYyeG10N2Vxa2ZkeG1hQmlVUGdZdGNiU3o4amtSMEsxemxGYzdMcVdtSkNOamo4QXJPNzBDN3NBUUFBIn0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["height"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["id"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"5.2","2":"A1","_rn_":"1"},{"1":"8.1","2":"A2","_rn_":"2"},{"1":"3.7","2":"B1","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
