@@ -56,7 +56,7 @@ str(plant_df)
 
 ### Matrices
 
-A matrix might at first appear similar to a data frame, but it has an additional constriant: rather than each column having a single type, *ALL* data in the matrix has the same type.
+A matrix might at first appear similar to a data frame, but it has an additional constraint: rather than each column having a single type, *ALL* data in the matrix has the same type.
 In general, it is a good idea for matrices to also be the same *kind* of data (same units), but that is more for organization than a constraint of the form itself. 
 
 The data frame above is made up of two different types, `character` and `numeric`, so converting it to a matrix would require us to make it all the same type.
