@@ -248,10 +248,13 @@ iris_shuffled$Species
 
 We'll drop the `Species` column for the heatmap itself.
 To retain the row ordering by `Species`, we need to set `cluster_rows` to `FALSE`.
+These plant samples don't have sample names, just numbers.
+We'll remove the row labels with the `show_rownames` argument.
 
 ```{r}
 pheatmap::pheatmap(iris_shuffled %>% dplyr::select(-Species),
-                   cluster_rows = FALSE)
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE)
 ```
 
 To order the columns in a specific way, we can use `dplyr::select()`.
@@ -282,7 +285,8 @@ We need to set both `cluster_cols` AND `cluster_rows` to `FALSE`.
 ```{r}
 pheatmap::pheatmap(iris_shuffled[, ordered_column_names],
                    cluster_cols = FALSE,
-                   cluster_rows = FALSE)
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE)
 ```
 
 ## Session Info
