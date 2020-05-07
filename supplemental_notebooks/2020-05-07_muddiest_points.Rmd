@@ -1,0 +1,297 @@
+---
+title: "Intro to RNA-seq Muddiest Point Review"
+author: Jaclyn Taroni for CCDL
+date: 2020-05-07
+output:
+  html_notebook:
+    toc: true
+    toc_float: true
+---
+
+## Introduction
+
+This notebook is designed to address questions that came up in the Introduction to RNA-seq module during CCDL training. 
+
+The questions are presented in the order in which they were received, so please take advantage of the table of contents to find and navigate to questions.
+
+- [Directory Creation Syntax](#directory-creation-syntax)
+- [Heatmap Ordering](#heatmap-ordering)
+
+```{r}
+`%>%` <- dplyr::`%>%`
+```
+
+## Directory Creation Syntax
+
+Let's say we want to create a directory to hold plots that contains subdirectories within it for separate analyses.
+We'll call the first analysis `clustering` in the example below.
+
+### `file.path()`
+
+`file.path()` adds a file path separator (`/` on Mac and Linux operating system, which is the operating system that our RStudio Server runs on) between separate folders or directory.
+Because file path separators can differ between your computer and the computer of someone who wants to use your code, we use `file.path()` instead of typing out `"plots/clustering"`.
+Each _argument_ to `file.path()` is a directory or file name.
+
+```{r}
+file.path("plots", "clustering")
+```
+
+In practice, it can make it easier to change file paths if you update an analysis in the future because you can add an argument to `file.path()`:
+
+```{r}
+file.path("plots", "clustering", "lncRNA")
+```
+
+We can assign the output of `file.path()` to an object.
+
+```{r}
+clustering_dir <- file.path("plots", "clustering")
+```
+
+If you assign the output of `file.path()` to an object at the beginning of a script or notebook, when you revisit an analysis or alter an analysis in the future you can take a quick look at the top at your script or notebook and understand where to look for the output.
+`clustering_dir` in the example above is a character vector of length 1 and behaves the same way as repeating `file.path("plots", "clustering")` anywhere you need it.
+
+### `dir.exists()` and `dir.create()`
+
+`dir.exists()` checks to see whether or not a directory exists.
+We'll use it below to demonstrate that `file.path("plots", "clustering")` and `clustering_dir` are equivalent.
+
+```{r}
+dir.exists(file.path("plots", "clustering"))
+```
+
+```{r}
+dir.exists(clustering_dir)
+```
+
+Creating the `plots/clustering` directory requires us to create two directories: `plots` and the subdirectory `clustering`.
+
+Let's try creating `clustering_dir` with `dir.create()` without any other arguments.
+
+```{r}
+dir.create(clustering_dir)
+```
+
+Because `plots` doesn't exist yet, we get an error.
+If we create `plots` first, we can successfully create `clustering_dir` without any additional arguments.
+
+```{r}
+dir.create("plots")
+dir.create(clustering_dir)
+```
+
+We see no error and we can check if the directory exists with `dir.exists()` now.
+
+```{r}
+dir.exists(clustering_dir)
+```
+
+`dir.create()` has an argument called `recursive` that is `FALSE` by default.
+Setting `recursive = TRUE` will allow us to more create directories than just the last directory in the path. 
+(In the `clustering_dir` example, the last directory in the path is `clustering`.)
+Said another way, `recursive = TRUE` allows us to create directories within directories.
+
+Let's look at another example, a directory called `results/clusters`.
+
+```{r}
+# assign `results/clusters` to a variable using file.path()
+cluster_membership_dir <- file.path("results", "clusters")
+dir.exists(cluster_membership_dir)
+```
+
+`cluster_membership_dir` doesn't exist yet and consists of the directory `results` and the subdirectory `clusters`, so we can use `dir.create()` with `recursive = TRUE` to create it.
+
+```{r}
+dir.create(cluster_membership_dir, recursive = TRUE)
+```
+
+No error, let's check if the directory exists:
+
+```{r}
+dir.exists(cluster_membership_dir)
+```
+
+### Using logicals to create directories
+
+The `!` operator in R negates a logical, so if something is `TRUE` it becomes `FALSE` and vice versa.
+
+```{r}
+!TRUE
+```
+
+```{r}
+!FALSE
+```
+
+Let's check for existence of another `results` directory called `pathway_analysis`.
+
+```{r}
+pathway_dir <- file.path("results", "pathway_analysis")
+dir.exists(pathway_dir)
+```
+
+Since we haven't created this directory yet, `dir.exists()` returns `FALSE`.
+Placing `!` in front of this function will negate whatever `dir.exists()` returns.
+
+```{r}
+!dir.exists(pathway_dir)
+```
+
+`if` is what we call a conditional statement - it controls the flow of code depending on some check.
+_If_ the condition within the parentheses is true, the code within the curly brackets `{}` will be run.
+
+```{r}
+if (TRUE) {
+  # message generates a message
+  message("This will run code!")
+}
+```
+
+Otherwise, the code within the `{}` will _not_ run.
+
+```{r}
+if (FALSE) {
+  message("This will run code!")
+}
+```
+
+No message!
+Negating a `FALSE` statement will cause the code to run, though.
+
+```{r}
+if (!FALSE) {
+  message("This will run code!")
+}
+```
+
+Putting this together with the `dir.exists()` - checking for a directory that doesn't exist yet will cause the code within `{}` to run.
+
+```{r}
+if (!dir.exists(pathway_dir)) {
+  message("This will run code!")
+}
+```
+
+So we can use this fact to create directories only when we need to.
+We haven't created `results/pathway_analysis` yet.
+
+```{r}
+if (!dir.exists(pathway_dir)) {
+  dir.create(pathway_dir, recursive = TRUE)
+}
+```
+
+Now check if the `dir.create()` step was run by checking for existence again:
+
+```{r}
+dir.exists(pathway_dir)
+```
+
+And now that it does exist, the code within the `{}` brackets will not run.
+Let's demonstrate that with `message()`.
+
+```{r}
+if (!dir.exists(pathway_dir)) {
+  message("This will run code!")
+}
+```
+
+No message.
+
+## Heatmap Ordering
+
+Let's use the `iris` dataset to demonstrate how to create heatmaps with `pheatmap`.
+
+```{r}
+# Load in the iris data to our workspace
+data("iris")
+```
+
+The `iris` data frame is already ordered by species.
+
+```{r}
+iris$Species
+```
+
+For illustrative purposes, let's put the data frame in a random order.
+Then we'll go through steps to reorder the data frame by species.
+
+```{r}
+# set.seed() allows our shuffling to be reproducible between trials
+set.seed(123)
+iris_shuffled <- iris[sample(1:nrow(iris), nrow(iris)), ]
+```
+
+Let's look at the first 10 rows of `iris_reshuffled`.
+
+```{r}
+head(iris_shuffled, n = 10)
+```
+
+First use `dplyr::arrange()` to order by the `Species` column.
+If we want to specify an order that is not alphabetical, we can change the order of levels in the `Species` column with `dplyr::mutate()` and the `levels` argument to `factor()`.
+
+```{r}
+iris_shuffled <- iris_shuffled %>%
+  dplyr::mutate(Species = factor(Species, 
+                                 levels = c("versicolor",
+                                            "setosa",
+                                            "virginica"))) %>%
+  dplyr::arrange(Species)
+```
+
+Let's look at the order of the `Species` column now.
+
+```{r}
+iris_shuffled$Species
+```
+
+We'll drop the `Species` column for the heatmap itself.
+To retain the row ordering by `Species`, we need to set `cluster_rows` to `FALSE`.
+These plant samples don't have sample names, just numbers.
+We'll remove the row labels with the `show_rownames` argument.
+
+```{r}
+pheatmap::pheatmap(iris_shuffled %>% dplyr::select(-Species),
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE)
+```
+
+To order the columns in a specific way, we can use `dplyr::select()`.
+(This command will also drop `Species` just because we don't include it!)
+
+```{r}
+iris_shuffled %>%
+  dplyr::select(Petal.Width,
+                Petal.Length,
+                Sepal.Width,
+                Sepal.Length)
+```
+
+Or by using square brackets and a character vector that matches the column names.
+
+```{r}
+ordered_column_names <- c("Petal.Width",
+                          "Petal.Length",
+                          "Sepal.Width",
+                          "Sepal.Length")
+iris_shuffled[, ordered_column_names]
+```
+
+Now let's create a heatmap with our specified column order: `Petal.Width`, `Petal.Length`, `Sepal.Width`, `Sepal.Length`.
+AND retain our ordering by `Species` -- `iris_shuffled` is already ordered by `Species`.
+We need to set both `cluster_cols` AND `cluster_rows` to `FALSE`.
+
+```{r}
+pheatmap::pheatmap(iris_shuffled[, ordered_column_names],
+                   cluster_cols = FALSE,
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE)
+```
+
+## Session Info
+
+```{r}
+sessionInfo()
+```
+
