@@ -289,6 +289,76 @@ pheatmap::pheatmap(iris_shuffled[, ordered_column_names],
                    show_rownames = FALSE)
 ```
 
+### Heatmap annotation
+
+It can be helpful to include annotations for your rows or columns in your heatmaps.
+Here we'll use row and column annotations to indicate species and what part of the irises are being measured (petal or sepal), respectively.
+
+Our first step is to generate data frames for each annotation.
+
+```{r}
+# Column annotation - we will order the heatmap columns with 
+# ordered_column_names again so we need to take that into account when we
+# build the column annotation
+annotation_column <- data.frame(
+  # take a look at ?rep for a shortcut/handy function we could use here
+  flower_part = c("Petal", "Petal", "Sepal", "Sepal")  
+)
+# The annotation data frames need rownames
+rownames(annotation_column) <- ordered_column_names
+
+# Row annotation - we can use the Species column from the iris data frame 
+# itself
+annotation_row <- data.frame(
+  species = iris_shuffled$Species
+)
+# Without "proper" rownames (e.g., not just numbers) in the iris data.frame,
+# the row annotation gives us an error
+rownames(iris_shuffled) <- paste0("iris", rownames(iris_shuffled))
+rownames(annotation_row) <- rownames(iris_shuffled)
+```
+
+Let's create a heatmap using the annotation data frames.
+
+```{r}
+pheatmap::pheatmap(iris_shuffled[, ordered_column_names],
+                   cluster_cols = FALSE,
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE,
+                   annotation_col = annotation_column,
+                   annotation_row = annotation_row)
+```
+
+We also have the ability to control the colors we use for the annotations.
+
+```{r}
+# The names in this list, including the names of the vectors that make up the
+# elements of the list, need to perfectly match what is in annotation_column
+# and annotation_row
+annotation_colors <- list(
+  # Here we're using hexcodes to specify colors, rather than their names in R
+  # This can be helpful if you're using programs * other than R * to generate
+  # display items for a paper/project
+  species = c(versicolor = "#E69F00", 
+              setosa = "#56B4E9", 
+              virginica = "#009E73"),
+  flower_part = c(Petal = "#0072B2", 
+                  Sepal = "#F0E442")
+)
+```
+
+Now let's use our custom annotation colors in our heatmap.
+
+```{r}
+pheatmap::pheatmap(iris_shuffled[, ordered_column_names],
+                   cluster_cols = FALSE,
+                   cluster_rows = FALSE,
+                   show_rownames = FALSE,
+                   annotation_col = annotation_column,
+                   annotation_row = annotation_row,
+                   annotation_colors = annotation_colors)
+```
+
 ## Session Info
 
 ```{r}
