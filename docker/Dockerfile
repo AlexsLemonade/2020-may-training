@@ -36,14 +36,17 @@ RUN R -e "BiocManager::install(c('ensembldb', 'DESeq2', 'qvalue',\
 RUN apt update && apt install -y fastqc
 
 # fastp 
+ENV FASTP_VERSION 0.20.1
 RUN git clone https://github.com/OpenGene/fastp.git
 RUN cd fastp && \
+    git checkout tags/v${FASTP_VERSION} -b v${FASTP_VERSION} && \
     make && \
     sudo make install
 
 # MultiQC
+ENV MULTIQC_VERSION 1.8
 RUN apt update && apt install -y python3-pip
-RUN pip3 install multiqc
+RUN pip3 install multiqc==${MULTIQC_VERSION}
 
 ENV PACKAGES git gcc make g++ libboost-all-dev liblzma-dev libbz2-dev \
     ca-certificates zlib1g-dev curl unzip autoconf
