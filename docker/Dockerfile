@@ -51,29 +51,14 @@ RUN pip3 install multiqc==${MULTIQC_VERSION}
 ENV PACKAGES git gcc make g++ libboost-all-dev liblzma-dev libbz2-dev \
     ca-certificates zlib1g-dev curl unzip autoconf
 
-ENV CMAKE_VERSION 3.17.2
 ENV SALMON_VERSION 1.2.1
-
-# salmon binary will be installed in /home/salmon/bin/salmon
-# don't modify things below here for version updates etc.
-
 WORKDIR /home
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ${PACKAGES} && \
     apt-get clean
 
-# Apt doesn't have the latest version of cmake, so install it using their script.
-RUN apt remove cmake cmake-data -y
-
-RUN wget --quiet https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh && \
-    mkdir /opt/cmake && \
-    sh cmake-${CMAKE_VERSION}-Linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
-    sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
-
-RUN curl -k -L https://github.com/COMBINE-lab/salmon/archive/v${SALMON_VERSION}.tar.gz -o salmon-v${SALMON_VERSION}.tar.gz && \
-    tar xzf salmon-v${SALMON_VERSION}.tar.gz && \
-    cd salmon-${SALMON_VERSION} && \
-    mkdir build && \
-    cd build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local && make && make install
+RUN wget https://github.com/COMBINE-lab/salmon/releases/download/v${SALMON_VERSION}/salmon-${SALMON_VERSION}_linux_x86_64.tar.gz
+RUN tar xzf salmon-${SALMON_VERSION}_linux_x86_64.tar.gz && \
+    rm -f salmon-${SALMON_VERSION}_linux_x86_64.tar.gz && \
+    sudo ln -s /home/salmon-latest_linux_x86_64/bin/salmon /usr/local/bin/salmon
