@@ -42,8 +42,8 @@ RUN cd fastp && \
     sudo make install
 
 # MultiQC
-RUN apt update && apt install -y python-pip
-RUN pip install multiqc
+RUN apt update && apt install -y python3-pip
+RUN pip3 install multiqc
 
 ENV PACKAGES git gcc make g++ libboost-all-dev liblzma-dev libbz2-dev \
     ca-certificates zlib1g-dev curl unzip autoconf
